@@ -1,10 +1,10 @@
+import Image from 'next/image'
 import Link from 'next/link'
+import { useState } from 'react'
 
+import { close, menu } from '@/assets'
 import { styles } from '@/components/styles'
 import { navLinks } from '@/lib/constants'
-import { useState } from 'react'
-import Image from 'next/image'
-import { menu, close } from '@/assets'
 
 const NavBar = () => {
     const [active, setActive] = useState('')
@@ -24,6 +24,10 @@ const NavBar = () => {
                         </li>
                     ))}
                 </ul>
+
+                <Link href={'/signin'} className="bg-violet-600 py-1 px-4 rounded-md hover:bg-violet-700">
+                    Sign in
+                </Link>
 
                 <div className="sm:hidden flex flex-1 justify-end items-center">
                     <Image src={toggle ? close : menu} alt="menu" className="w-[28px] h-[28px] object-contain" onClick={() => setToggle(!toggle)} />
