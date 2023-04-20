@@ -25,7 +25,7 @@ const NavBar = () => {
                     ))}
                 </ul>
 
-                <Link href={'/signin'} className="bg-violet-600 py-1 px-4 rounded-md hover:bg-violet-700">
+                <Link href={'/sign-in'} className="bg-violet-600 py-1 px-4 rounded-md hover:bg-violet-700">
                     Sign in
                 </Link>
 

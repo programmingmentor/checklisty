@@ -88,7 +88,7 @@ const SignUp = () => {
                     </form>
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Have an account?{' '}
-                        <Link href="/signin" className="font-semibold leading-6 text-violet-600 hover:text-violet-500">
+                        <Link href="/sign-in" className="font-semibold leading-6 text-violet-600 hover:text-violet-500">
                             Sign in
                         </Link>
                     </p>
