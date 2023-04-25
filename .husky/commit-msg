@@ -7,6 +7,8 @@ blue='\033[0;34m'
 green='\033[0;32m'
 NC='\033[0m' # No colors
 
+printf "\n"
+
 if ! [[ $(cat "$1") =~ ^((chore|docs|feat|fix|refactor|test)(\([a-zA-Z0-9]+\))?:|Merge|Pull) ]]; then
   printf " ${red}Use semantic commit messages (ﾉ˚Д˚)ﾉ\n"
   printf " \n"
