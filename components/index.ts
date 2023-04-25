@@ -1,4 +1,4 @@
-'use client'
+// "use client"
 import About from './About'
 import ForgotPassword from './ForgotPassword'
 import SectionWrapper from './hoc/SectionWrapper'
