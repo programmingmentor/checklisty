@@ -1,23 +1,19 @@
-import { db } from '@/lib/db'
+import { db } from '../lib/db'
 
-//create 3 users
 async function main() {
-    const users = [
-        { email: 'John@email.com', password: '123321', firstName: 'John' },
-        { email: 'Wick@email.com', password: '123321', firstName: 'Wick' },
-        { email: 'Julia@email.com', password: '123321', firstName: 'Julia' },
-    ]
+    const defaultUsers = ['Bob', 'Jackie', 'Alice']
 
-    users.map(async (user) => {
+    defaultUsers.map(async (name) => {
         await db.user.upsert({
-            where: { email: user.email },
-            create: {
-                email: user.email,
-                password: user.password,
-                firstName: user.firstName,
-            },
+            where: { email: `${name}@example.com` },
             update: {},
+            create: {
+                email: `${name}@example.com`,
+                firstName: name,
+                password: 'password',
+            },
         })
+        console.log(`User ${name} created successfully \n email:${name}@example.com \n password: password`)
     })
 }
 
@@ -26,6 +22,7 @@ main()
         await db.$disconnect()
     })
     .catch(async (e) => {
+        console.error(e)
         await db.$disconnect()
         process.exit(1)
     })
