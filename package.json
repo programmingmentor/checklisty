@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "migrate:dev": "npx prisma migrate dev --preview-feature",
+    "studio": "npx prisma studio",
     "lint": "next lint",
     "husky:init": "husky install .husky",
     "lint-staged": "lint-staged ."
@@ -34,6 +36,10 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.2.1",
     "prettier": "^2.8.7",
-    "prisma": "4.13.0"
+    "prisma": "4.13.0",
+    "prisma-erd-generator": "^1.5.4"
+  },
+  "prisma": {
+    "seed": "ts-node --transpileOnly prisma/seed.ts"
   }
 }
