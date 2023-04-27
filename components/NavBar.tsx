@@ -25,11 +25,11 @@ const NavBar = () => {
                         </li>
                     ))}
                 </ul>
-
+                
                 <Link href={'/sign-in'} className="bg-violet-600 py-1 px-4 rounded-md hover:bg-violet-700">
                     Sign in
                 </Link>
-
+                
                 <div className="sm:hidden flex flex-1 justify-end items-center">
                     <Image src={toggle ? close : menu} alt="menu" className="w-[28px] h-[28px] object-contain" onClick={() => setToggle(!toggle)} />
 

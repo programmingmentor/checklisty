@@ -7,7 +7,7 @@ const fetcher = async ({ url, method, body, json = true }: { url: string; method
             'Content-Type': 'application/json',
         },
     })
-
+    console.log(res)
     if (!res.ok) {
         throw new Error('API Error')
     }
@@ -16,4 +16,12 @@ const fetcher = async ({ url, method, body, json = true }: { url: string; method
         const data = await res.json()
         return data
     }
+}
+export const signup = (user) => {
+    console.log(user)
+    return fetcher({ url: '/api/signup', method: 'post', body: user })
+}
+
+export const signin = (user) => {
+    return fetcher({ url: '/api/signin', method: 'post', body: user })
 }

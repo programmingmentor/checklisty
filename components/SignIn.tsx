@@ -1,10 +1,45 @@
-import Link from 'next/link'
+'use client'
+import 'react-toastify/dist/ReactToastify.css'
 
+import Link from 'next/link'
+import { useState } from 'react'
+import { Slide, toast, ToastContainer } from 'react-toastify'
+
+import { signin } from '../lib/api'
 import SectionWrapper from './hoc/SectionWrapper'
 
 const SignIn = () => {
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    })
+
+    const handleInputChange = (event) => {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value,
+        })
+    }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+
+        try {
+            await signin(formData)
+            toast.success('You have successfully signed in!')
+            setFormData({
+                email: '',
+                password: '',
+            })
+
+        } catch (error) {
+            toast.warn('Please check your email and password and try again.')
+            console.log(error)
+        }
+    }
     return (
         <>
+            <ToastContainer position="top-center" autoClose={1700} transition={Slide} hideProgressBar newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover={false} theme="light" />
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-4 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img className="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=violet&shade=600" alt="Your Company" />
@@ -12,7 +47,7 @@ const SignIn = () => {
                 </div>
 
                 <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form className="space-y-6" action="#" method="POST">
+                    <form className="space-y-6" action="#" method="POST" onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
                                 Email address
@@ -25,6 +60,7 @@ const SignIn = () => {
                                     autoComplete="email"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
+                                    onChange={handleInputChange}
                                 />
                             </div>
                         </div>
@@ -48,6 +84,7 @@ const SignIn = () => {
                                     autoComplete="current-password"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
+                                    onChange={handleInputChange}
                                 />
                             </div>
                         </div>

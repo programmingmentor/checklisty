@@ -1,10 +1,53 @@
+'use client'
 import Link from 'next/link'
+import { useState } from 'react'
+import { Slide, toast, ToastContainer } from 'react-toastify'
 
+import { signup } from '../lib/api'
 import SectionWrapper from './hoc/SectionWrapper'
 
 const SignUp = () => {
+    const [formData, setFormData] = useState({
+        // name: '',
+        email: '',
+        password: '',
+        // confirmPassword: '',
+    })
+
+    const handleInputChange = (event) => {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value,
+        })
+    }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+
+        try {
+            await signup(formData)
+            toast.success('You have successfully signed up!')
+        } catch (error) {
+            toast.warn('The email you entered is already in use.')
+            console.log(error)
+        }
+    }
+
     return (
         <>
+            <ToastContainer
+                position="top-center"
+                autoClose={1700}
+                transition={Slide}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover={false}
+                theme="light"
+            />
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-2 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img className="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=violet&shade=600" alt="Your Company" />
@@ -12,7 +55,7 @@ const SignUp = () => {
                 </div>
 
                 <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form className="space-y-6" action="#" method="POST">
+                    <form className="space-y-6" action="#" method="POST" onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="name" className="block text-sm font-medium leading-6 text-white">
                                 Name
@@ -25,6 +68,7 @@ const SignUp = () => {
                                     autoComplete="name"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
+                                    // onChange={handleInputChange}
                                 />
                             </div>
                         </div>
@@ -41,6 +85,7 @@ const SignUp = () => {
                                     autoComplete="email"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
+                                    onChange={handleInputChange}
                                 />
                             </div>
                         </div>
@@ -57,6 +102,7 @@ const SignUp = () => {
                                     autoComplete="new-password"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
+                                    onChange={handleInputChange}
                                 />
                             </div>
                         </div>
@@ -73,6 +119,7 @@ const SignUp = () => {
                                     autoComplete="new-password"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
+                                    // onChange={handleInputChange}
                                 />
                             </div>
                         </div>
