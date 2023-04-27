@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 local_branch_name="$(git rev-parse --abbrev-ref HEAD)"
 
 # Color codes
@@ -12,7 +13,7 @@ REGEX_BRANCH_NAME_ID="^(feature|bugfix|improvement|library|prerelease|release|ho
 
 printf "\n"
 
-if [[ ! $local_branch_name =~ $valid_branch_regex ]]; then
+if [[ ! $local_branch_name =~ $REGEX_BRANCH_NAME_ID ]]; then
 printf "${red} Use semantic branch names (ﾉ˚Д˚)ﾉ "
 printf "\n"
 printf "${yellow} /${green}${NC}\n"

@@ -9,3 +9,4 @@
 5. Run migrations with `npx prisma migrate dev`
 6. Run the app with `npm run dev` or `yarn dev`
 7. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
