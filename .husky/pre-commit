@@ -1,5 +1,5 @@
 bash "$(dirname -- "$0")/_/husky.sh"
 
-. "$(dirname -- "$0")/branch-names.sh"
-. "$(dirname -- "$0")/pre-commit-hooks/lint-staged.sh"
-. "$(dirname -- "$0")/pre-commit-hooks/stop-push-to-dev.sh"
+bash "$(dirname -- "$0")/branch-names.sh"
+bash "$(dirname -- "$0")/pre-commit-hooks/lint-staged.sh"
+bash "$(dirname -- "$0")/pre-commit-hooks/stop-push-to-dev.sh"
