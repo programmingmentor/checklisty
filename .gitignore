@@ -39,8 +39,6 @@ next-env.d.ts
 # visula studio code
 /.vscode
 
-#package-lock.json
-package-lock.json
 
 #yarn.lock
 yarn.lock
