@@ -8,11 +8,11 @@ blue='\033[0;34m'
 green='\033[0;32m'
 NC='\033[0m' # No colors
 
-REGEX_BRANCH_NAME_ID="^(feature|bugfix|improvement|library|prerelease|release|hotfix|feat)\/([a-zA-Z0-9-]+)$"
+REGEX_BRANCH_NAME_ID="^(feature|bugfix|improvement|library|prerelease|release|hotfix)\/([a-zA-Z0-9-]+)$"
 
 printf "\n"
 
-if [[ ! $local_branch_name =~ $valid_branch_regex ]]; then
+if [[ ! $local_branch_name =~ $REGEX_BRANCH_NAME_ID ]]; then
 printf "${red} Use semantic branch names (ﾉ˚Д˚)ﾉ "
 printf "\n"
 printf "${yellow} /${green}${NC}\n"

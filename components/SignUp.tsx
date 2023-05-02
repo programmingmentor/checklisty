@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Slide, toast, ToastContainer } from 'react-toastify'
 
@@ -7,8 +8,9 @@ import { signup } from '../lib/api'
 import SectionWrapper from './hoc/SectionWrapper'
 
 const SignUp = () => {
+    const router = useRouter()
     const [formData, setFormData] = useState({
-        // name: '',
+        name: '',
         email: '',
         password: '',
         // confirmPassword: '',
@@ -27,6 +29,9 @@ const SignUp = () => {
         try {
             await signup(formData)
             toast.success('You have successfully signed up!')
+            setTimeout(() => {
+                router.push('/')
+            }, 2300);
         } catch (error) {
             toast.warn('The email you entered is already in use.')
             console.log(error)
@@ -68,7 +73,7 @@ const SignUp = () => {
                                     autoComplete="name"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
-                                    // onChange={handleInputChange}
+                                    onChange={handleInputChange}
                                 />
                             </div>
                         </div>

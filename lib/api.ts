@@ -1,4 +1,11 @@
-const fetcher = async ({ url, method, body, json = true }: { url: string; method: string; body?: object; json?: boolean }) => {
+interface FetcherParams {
+    url: string
+    method: string
+    body?: object
+    json?: boolean
+}
+
+const fetcher = async ({ url, method, body, json = true }: FetcherParams) => {
     const res = await fetch(url, {
         method,
         body: body && JSON.stringify(body),
@@ -7,7 +14,7 @@ const fetcher = async ({ url, method, body, json = true }: { url: string; method
             'Content-Type': 'application/json',
         },
     })
-    console.log(res)
+    // console.log(res)
     if (!res.ok) {
         throw new Error('API Error')
     }
@@ -18,7 +25,7 @@ const fetcher = async ({ url, method, body, json = true }: { url: string; method
     }
 }
 export const signup = (user) => {
-    console.log(user)
+    // console.log(user)
     return fetcher({ url: '/api/signup', method: 'post', body: user })
 }
 

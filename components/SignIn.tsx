@@ -2,6 +2,7 @@
 import 'react-toastify/dist/ReactToastify.css'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Slide, toast, ToastContainer } from 'react-toastify'
 
@@ -9,6 +10,7 @@ import { signin } from '../lib/api'
 import SectionWrapper from './hoc/SectionWrapper'
 
 const SignIn = () => {
+    const router = useRouter()
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -31,7 +33,9 @@ const SignIn = () => {
                 email: '',
                 password: '',
             })
-
+            setTimeout(() => {
+                router.push('/')
+            }, 2300)
         } catch (error) {
             toast.warn('Please check your email and password and try again.')
             console.log(error)
@@ -91,6 +95,7 @@ const SignIn = () => {
 
                         <div>
                             <button
+                                // onClick={() => router.push('/')}
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-violet-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
                             >
