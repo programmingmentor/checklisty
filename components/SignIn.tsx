@@ -1,6 +1,7 @@
 'use client'
 import 'react-toastify/dist/ReactToastify.css'
 
+// import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -16,14 +17,14 @@ const SignIn = () => {
         password: '',
     })
 
-    const handleInputChange = (event) => {
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({
             ...formData,
             [event.target.name]: event.target.value,
         })
     }
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
         try {
@@ -33,9 +34,9 @@ const SignIn = () => {
                 email: '',
                 password: '',
             })
-            setTimeout(() => {
-                router.push('/')
-            }, 2300)
+            router.push('/')
+            router.refresh()
+            
         } catch (error) {
             toast.warn('Please check your email and password and try again.')
             console.log(error)
@@ -46,7 +47,11 @@ const SignIn = () => {
             <ToastContainer position="top-center" autoClose={1700} transition={Slide} hideProgressBar newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover={false} theme="light" />
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-4 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <img className="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=violet&shade=600" alt="Your Company" />
+                    <img
+                        className="mx-auto h-10 w-auto"
+                        src="https://tailwindui.com/img/logos/mark.svg?color=violet&shade=600"
+                        alt="Your Company"
+                    />
                     <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-white">Sign in to your account</h2>
                 </div>
 
@@ -61,6 +66,7 @@ const SignIn = () => {
                                     id="email"
                                     name="email"
                                     type="email"
+                                    value={formData.email}
                                     autoComplete="email"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
@@ -85,6 +91,7 @@ const SignIn = () => {
                                     id="password"
                                     name="password"
                                     type="password"
+                                    value={formData.password}
                                     autoComplete="current-password"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
@@ -95,7 +102,6 @@ const SignIn = () => {
 
                         <div>
                             <button
-                                // onClick={() => router.push('/')}
                                 type="submit"
                                 className="flex w-full justify-center rounded-md bg-violet-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
                             >

@@ -16,5 +16,5 @@ model User {
   updatedAt DateTime  @updatedAt
   email     String    @unique
   password  String
-  name String?
+  name String
 }

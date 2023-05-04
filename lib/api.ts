@@ -19,16 +19,18 @@ const fetcher = async ({ url, method, body, json = true }: FetcherParams) => {
         throw new Error('API Error')
     }
 
-    if (json) {
-        const data = await res.json()
-        return data
-    }
+    const data = json ? await res.json() : null
+    return data
 }
+
 export const signup = (user) => {
-    // console.log(user)
     return fetcher({ url: '/api/signup', method: 'post', body: user })
 }
 
 export const signin = (user) => {
     return fetcher({ url: '/api/signin', method: 'post', body: user })
+}
+
+export const logout = () => {
+    return fetcher({ url: '/api/logout', method: 'post' })
 }

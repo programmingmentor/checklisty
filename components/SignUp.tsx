@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -16,22 +17,21 @@ const SignUp = () => {
         // confirmPassword: '',
     })
 
-    const handleInputChange = (event) => {
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setFormData({
             ...formData,
             [event.target.name]: event.target.value,
         })
     }
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
         event.preventDefault()
 
         try {
             await signup(formData)
             toast.success('You have successfully signed up!')
-            setTimeout(() => {
-                router.push('/')
-            }, 2300);
+            router.push('/')
+            router.refresh()
         } catch (error) {
             toast.warn('The email you entered is already in use.')
             console.log(error)

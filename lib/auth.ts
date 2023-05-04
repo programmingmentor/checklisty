@@ -20,7 +20,7 @@ export const createJWT = (user) => {
             .setIssuedAt(iat)
             .setNotBefore(iat)
             .sign(privateKey);
-
+        
         return jwt;
     } catch (error) {
         throw new Error(`Error creating JWT: ${error.message}`);
@@ -37,21 +37,23 @@ export const validateJWT = async (jwt) => {
         throw new Error(`Error validating JWT: ${error.message}`);
     }
 }
+interface Cookies {
+    [key: string]: any
+}
+export const getUserFromCookie = async (cookies: Cookies): Promise<any> => {
+    const jwt = cookies.get(process.env.COOKIE_NAME)
 
-export const getUserFromCookie = async (cookies) => {
-    try {
-        const jwt = cookies?.[process.env.COOKIE_NAME]?.value;
-        if (!jwt) throw new Error('No JWT found in cookie');
-
-        const { id } = await validateJWT(jwt);
-        if (!id) throw new Error('Invalid JWT: no user ID found');
-
-        const user = await prisma.user.findUnique({
-            where: { id },
-        });
-        console.log('user', user);
-        return user;
-    } catch (error) {
-        throw new Error(`Error getting user from cookie: ${error.message}`);
+    if (!jwt) {
+        return null
     }
+
+    const { id } = await validateJWT(jwt.value)
+
+    const user = await prisma.user.findUnique({
+        where: {
+            id: id as string,
+        },
+    })
+
+    return user
 }

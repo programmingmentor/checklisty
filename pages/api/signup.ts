@@ -16,7 +16,7 @@ export default async function signUp(req: NextApiRequest, res: NextApiResponse) 
   const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
-    res.status(400).json({ error: 'Missing required fields' });
+    res.status(401).json({ error: 'Missing required fields' });
     return;
   }
 
