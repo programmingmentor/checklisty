@@ -4,54 +4,53 @@ import 'react-toastify/dist/ReactToastify.css'
 // import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Slide, toast, ToastContainer } from 'react-toastify'
 
 import { signin } from '../lib/api'
 import SectionWrapper from './hoc/SectionWrapper'
 
+
 const SignIn = () => {
+    const initial = { email: '', password: '' }
+    const [formData, setFormData] = useState({ ...initial })
     const router = useRouter()
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    })
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({
-            ...formData,
-            [event.target.name]: event.target.value,
-        })
-    }
+    const handleSubmit = useCallback(
+        async (e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault()
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-
-        try {
-            await signin(formData)
-            toast.success('You have successfully signed in!')
-            setFormData({
-                email: '',
-                password: '',
-            })
-            router.push('/')
-            router.refresh()
-            
-        } catch (error) {
-            toast.warn('Please check your email and password and try again.')
-            console.log(error)
-        }
-    }
+            try {
+                await signin(formData)
+                toast.success('You have successfully signed in!')
+                router.replace('/')
+            } catch (error) {
+                toast.warn('Please check your email and password and try again.')
+                console.log(error)
+            } finally {
+                setFormData({ ...initial })
+            }
+        },
+        [formData.email, formData.password]
+    )
     return (
         <>
-            <ToastContainer position="top-center" autoClose={1700} transition={Slide} hideProgressBar newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover={false} theme="light" />
+            <ToastContainer
+                position="top-center"
+                autoClose={1700}
+                transition={Slide}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover={false}
+                theme="light"
+            />
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-4 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <img
-                        className="mx-auto h-10 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=violet&shade=600"
-                        alt="Your Company"
-                    />
+                    <img className="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=violet&shade=600" alt="Your Company" />
                     <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-white">Sign in to your account</h2>
                 </div>
 
@@ -70,7 +69,7 @@ const SignIn = () => {
                                     autoComplete="email"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
-                                    onChange={handleInputChange}
+                                    onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
                                 />
                             </div>
                         </div>
@@ -95,7 +94,7 @@ const SignIn = () => {
                                     autoComplete="current-password"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
-                                    onChange={handleInputChange}
+                                    onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
                                 />
                             </div>
                         </div>

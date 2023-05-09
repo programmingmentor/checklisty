@@ -1,42 +1,36 @@
 'use client'
-import Image from 'next/image'
+// import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Slide, toast, ToastContainer } from 'react-toastify'
 
 import { signup } from '../lib/api'
 import SectionWrapper from './hoc/SectionWrapper'
 
+
 const SignUp = () => {
+    const initial = { name: '', email: '', password: '' }
     const router = useRouter()
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        password: '',
-        // confirmPassword: '',
-    })
+    const [formData, setFormData] = useState({ ...initial })
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        setFormData({
-            ...formData,
-            [event.target.name]: event.target.value,
-        })
-    }
+    const handleSubmit = useCallback(
+        async (e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault()
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
-        event.preventDefault()
-
-        try {
-            await signup(formData)
-            toast.success('You have successfully signed up!')
-            router.push('/')
-            router.refresh()
-        } catch (error) {
-            toast.warn('The email you entered is already in use.')
-            console.log(error)
-        }
-    }
+            try {
+                await signup(formData)
+                toast.success('You have successfully signed up!')
+                router.replace('/')
+            } catch (error) {
+                toast.warn('The email you entered is already in use.')
+                console.log(error)
+            } finally {
+                setFormData({ ...initial })
+            }
+        },
+        [formData.name, formData.email, formData.password]
+    )
 
     return (
         <>
@@ -73,7 +67,7 @@ const SignUp = () => {
                                     autoComplete="name"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
-                                    onChange={handleInputChange}
+                                    onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
                                 />
                             </div>
                         </div>
@@ -90,7 +84,7 @@ const SignUp = () => {
                                     autoComplete="email"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
-                                    onChange={handleInputChange}
+                                    onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
                                 />
                             </div>
                         </div>
@@ -107,7 +101,7 @@ const SignUp = () => {
                                     autoComplete="new-password"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
-                                    onChange={handleInputChange}
+                                    onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
                                 />
                             </div>
                         </div>

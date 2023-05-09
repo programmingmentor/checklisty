@@ -7,7 +7,7 @@ const Signout = async () => {
     const router = useRouter()
     await logout()
     router.push('/')
-    router.refresh()
+    // router.refresh()
     return (
         <>
             <h1>Signout</h1>
