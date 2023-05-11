@@ -1,15 +1,15 @@
-import { db } from '../lib/db'
+import prisma from '@/prisma/client'
 
 async function main() {
     const defaultUsers = ['Bob', 'Jackie', 'Alice']
 
     defaultUsers.map(async (name) => {
-        await db.user.upsert({
+        await prisma.user.upsert({
             where: { email: `${name}@example.com` },
             update: {},
             create: {
                 email: `${name}@example.com`,
-                firstName: name,
+                name: name,
                 password: 'password',
             },
         })
@@ -19,10 +19,10 @@ async function main() {
 
 main()
     .then(async () => {
-        await db.$disconnect()
+        await prisma.$disconnect()
     })
     .catch(async (e) => {
         console.error(e)
-        await db.$disconnect()
+        await prisma.$disconnect()
         process.exit(1)
     })
