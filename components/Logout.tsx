@@ -3,15 +3,14 @@ import { useRouter } from 'next/navigation'
 
 import { logout } from '../lib/api'
 
-const Signout = async () => {
+const Logout = async () => {
     const router = useRouter()
     await logout()
-    router.push('/')
-    // router.refresh()
+    router.replace('/')
     return (
         <>
-            <h1>Signout</h1>
+            <h1>Logout</h1>
         </>
     )
 }
-export default Signout
+export default Logout

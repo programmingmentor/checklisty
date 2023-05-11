@@ -32,15 +32,15 @@ export const validateJWT = async (jwt) => {
         const privateKey = new TextEncoder().encode(process.env.JWT_SECRET)
         const { payload } = await jwtVerify(jwt, privateKey)
 
-        return payload.payload;
+        return payload.payload as any;
     } catch (error) {
         throw new Error(`Error validating JWT: ${error.message}`);
     }
 }
-interface Cookies {
-    [key: string]: any
-}
-export const getUserFromCookie = async (cookies: Cookies): Promise<any> => {
+// interface Cookies {
+//     [key: string]: any
+// }
+export const getUserFromCookie = async (cookies) => {
     const jwt = cookies.get(process.env.COOKIE_NAME)
 
     if (!jwt) {

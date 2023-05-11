@@ -12,7 +12,7 @@ export default async function signIn(req: NextApiRequest, res: NextApiResponse) 
     res.status(405).end();
     return;
   }
-
+  console.log('req.body', req.body)
   const { email, password } = req.body;
 
   if (!email || !password) {

@@ -36,7 +36,7 @@ const SignUp = () => {
         <>
             <ToastContainer
                 position="top-center"
-                autoClose={1700}
+                autoClose={1400}
                 transition={Slide}
                 hideProgressBar
                 newestOnTop={false}
@@ -49,7 +49,7 @@ const SignUp = () => {
             />
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-2 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <img className="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=violet&shade=600" alt="Your Company" />
+                    <img className="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=teal&shade=600" alt="Your Company" />
                     <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-white">Sign up for an account</h2>
                 </div>
 
@@ -64,9 +64,10 @@ const SignUp = () => {
                                     id="name"
                                     name="name"
                                     type="text"
+                                    value={formData.name}
                                     autoComplete="name"
                                     required
-                                    className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
+                                    className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
                                     onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
                                 />
                             </div>
@@ -81,9 +82,10 @@ const SignUp = () => {
                                     id="email"
                                     name="email"
                                     type="email"
+                                    value={formData.email}
                                     autoComplete="email"
                                     required
-                                    className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
+                                    className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
                                     onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
                                 />
                             </div>
@@ -98,15 +100,16 @@ const SignUp = () => {
                                     id="password"
                                     name="password"
                                     type="password"
+                                    value={formData.password}
                                     autoComplete="new-password"
                                     required
-                                    className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
+                                    className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
                                     onChange={(e) => setFormData((prev) => ({ ...prev, password: e.target.value }))}
                                 />
                             </div>
                         </div>
 
-                        <div>
+                        {/* <div>
                             <label htmlFor="confirmPassword" className="block text-sm font-medium leading-6 text-white">
                                 Re-enter password
                             </label>
@@ -117,37 +120,37 @@ const SignUp = () => {
                                     type="password"
                                     autoComplete="new-password"
                                     required
-                                    className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
+                                    className="block w-full rounded-md border-0 py-1.5 px-2 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
                                     // onChange={handleInputChange}
                                 />
                             </div>
-                        </div>
+                        </div> */}
 
                         <div>
                             <button
                                 type="submit"
-                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500"
+                                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
                             >
                                 Sign up
                             </button>
                         </div>
                     </form>
-                    <p className="mt-10 text-center text-sm text-gray-500">
+                    <p className="mt-5 text-center text-sm text-gray-500">
                         Have an account?{' '}
-                        <Link href="/sign-in" className="font-semibold leading-6 text-violet-600 hover:text-violet-500">
+                        <Link href="/sign-in" className="font-semibold leading-6 text-teal-600 hover:text-teal-500">
                             Sign in
                         </Link>
                     </p>
                     {/* Terms of service */}
-                    <div className="mt-5">
+                    <div className="mt-4">
                         <p className="text-sm text-center text-gray-300">
                             By signing up, you agree to our
-                            <a href="#" className="font-medium text-white hover:text-violet-500">
+                            <a href="#" className="font-medium text-white hover:text-teal-500">
                                 {' '}
                                 Terms of Service
                             </a>{' '}
                             and{' '}
-                            <a href="#" className="font-medium text-white hover:text-violet-500">
+                            <a href="#" className="font-medium text-white hover:text-teal-500">
                                 Privacy Policy
                             </a>
                             .
