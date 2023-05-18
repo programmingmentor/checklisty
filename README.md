@@ -1,5 +1,7 @@
 ### Checklisty app
 
+## Need to write how correct make commits!
+?
 ## Installation
 
 1. Clone the repo
