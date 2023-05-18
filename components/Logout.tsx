@@ -6,7 +6,7 @@ import { logout } from '../lib/api'
 const Logout = async () => {
     const router = useRouter()
     await logout()
-    router.replace('/')
+    router.push('/')
     return (
         <>
             <h1>Logout</h1>

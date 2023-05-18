@@ -21,7 +21,7 @@ const SignUp = () => {
             try {
                 await signup(formData)
                 toast.success('You have successfully signed up!')
-                router.replace('/')
+                router.push('/')
             } catch (error) {
                 toast.warn('The email you entered is already in use.')
                 console.log(error)
