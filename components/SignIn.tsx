@@ -23,7 +23,8 @@ const SignIn = () => {
             try {
                 await signin(formData)
                 toast.success('You have successfully signed in!')
-                router.push('/')
+                router.push('/');
+                router.refresh();
             } catch (error) {
                 toast.warn('Please check your email and password and try again.')
                 console.log(error)
