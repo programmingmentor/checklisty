@@ -22,6 +22,7 @@ const SignUp = () => {
                 await signup(formData)
                 toast.success('You have successfully signed up!')
                 router.push('/')
+                router.refresh()
             } catch (error) {
                 toast.warn('The email you entered is already in use.')
                 console.log(error)
@@ -136,7 +137,7 @@ const SignUp = () => {
                         </div>
                     </form>
                     <p className="mt-5 text-center text-sm text-gray-500">
-                        Have an account?{' '}
+                        Have an account?
                         <Link href="/sign-in" className="font-semibold leading-6 text-teal-600 hover:text-teal-500">
                             Sign in
                         </Link>
@@ -146,10 +147,9 @@ const SignUp = () => {
                         <p className="text-sm text-center text-gray-300">
                             By signing up, you agree to our
                             <a href="#" className="font-medium text-white hover:text-teal-500">
-                                {' '}
                                 Terms of Service
-                            </a>{' '}
-                            and{' '}
+                            </a>
+                            and
                             <a href="#" className="font-medium text-white hover:text-teal-500">
                                 Privacy Policy
                             </a>

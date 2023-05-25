@@ -13,7 +13,7 @@ export const metadata = {
 }
 
 const getData = async () => {
-    await delay(2300)
+    await delay(1500)
     const user = await getUserFromCookie(cookies())
     return user
 }

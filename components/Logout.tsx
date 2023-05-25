@@ -7,10 +7,11 @@ const Logout = async () => {
     const router = useRouter()
     await logout()
     router.push('/')
-    return (
-        <>
-            <h1>Logout</h1>
-        </>
-    )
+    router.refresh()
+    // return (
+    //     <>
+    //         <h1>Logout</h1>
+    //     </>
+    // )
 }
 export default Logout

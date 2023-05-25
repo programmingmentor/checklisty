@@ -15,9 +15,7 @@ const NavBar = ({ user }) => {
     const [isUser, setIsUser] = useState('')
 
     useEffect(() => {
-        if (user) {
-            setIsUser(user)
-        }
+        user ? setIsUser(user) : setIsUser('')
     }, [user])
 
     return (
