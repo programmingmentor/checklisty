@@ -1,15 +1,24 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { close, menu } from '@/assets'
 import { styles } from '@/components/styles'
+import { logout } from '@/lib/api'
 import { navLinks } from '@/lib/constants'
 
 const NavBar = ({ user }) => {
-    console.log('render navbar')
+    // console.log('render navbar')
     console.log(user)
+    const router = useRouter()
+
+    const handleLogout = async () => {
+        await logout()
+        router.push('/')
+    }
+
     const [active, setActive] = useState('')
     const [toggle, setToggle] = useState(false)
     const [isUser, setIsUser] = useState('')
@@ -56,9 +65,21 @@ const NavBar = ({ user }) => {
 
             <div className="flex">
                 {isUser ? <h2 className="text-sm flex items-center pr-1">Welcome {isUser}</h2> : null}
-                <Link href={isUser ? '/logout' : '/sign-in'} className="text-sm bg-teal-600 py-1 px-2 rounded-md hover:bg-teal-700">
-                    {isUser ? 'Logout' : 'Sign In/Sign Up'}
-                </Link>
+                {isUser ? (
+                    <button
+                        className="text-sm bg-teal-600 py-1 px-2 rounded-md hover:bg-teal-700"
+                        onClick={() => {
+                            handleLogout()
+                            setIsUser('')
+                        }}
+                    >
+                        Logout
+                    </button>
+                ) : (
+                    <Link href="/sign-in" className="text-sm bg-teal-600 py-1 px-2 rounded-md hover:bg-teal-700">
+                        Sign In/Sign Up
+                    </Link>
+                )}
             </div>
         </nav>
     )
