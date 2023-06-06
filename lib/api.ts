@@ -13,6 +13,10 @@ interface SignInParams {
     email: string
     password: string
 }
+interface ResetPasswordParams {
+    email: string
+    newPassword: string
+}
 interface SendEmailParams {
     email: string
     code: string
@@ -45,6 +49,10 @@ export const signin = (user: SignInParams) => {
 
 export const logout = () => {
     return fetcher({ url: '/api/logout', method: 'post' })
+}
+
+export const resetPassword = (user: ResetPasswordParams) => {
+    return fetcher({ url: '/api/resetpassword', method: 'put', body: user })
 }
 
 export const sendEmail = (email: SendEmailParams) => {

@@ -37,9 +37,7 @@ export const validateJWT = async (jwt) => {
         throw new Error(`Error validating JWT: ${error.message}`);
     }
 }
-// interface Cookies {
-//     [key: string]: any
-// }
+
 export const getUserFromCookie = async (cookies) => {
     const jwt = cookies.get(process.env.COOKIE_NAME)
 
@@ -54,6 +52,5 @@ export const getUserFromCookie = async (cookies) => {
             id: id as string,
         },
     })
-
     return user
 }

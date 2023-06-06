@@ -10,7 +10,6 @@ import { Slide, toast, ToastContainer } from 'react-toastify'
 import { signin } from '../lib/api'
 import SectionWrapper from './hoc/SectionWrapper'
 
-
 const SignIn = () => {
     const initial = { email: '', password: '' }
     const [formData, setFormData] = useState({ ...initial })
@@ -23,8 +22,8 @@ const SignIn = () => {
             try {
                 await signin(formData)
                 toast.success('You have successfully signed in!')
-                router.push('/');
-                router.refresh();
+                router.push('/')
+                router.refresh()
             } catch (error) {
                 toast.warn('Please check your email and password and try again.')
                 console.log(error)
@@ -32,6 +31,7 @@ const SignIn = () => {
                 setFormData({ ...initial })
             }
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [formData.email, formData.password]
     )
     return (
@@ -120,10 +120,9 @@ const SignIn = () => {
                         <p className="text-sm text-center text-gray-300">
                             By signing up, you agree to our
                             <a href="#" className="font-medium text-white hover:text-teal-500">
-                                {' '}
                                 Terms of Service
-                            </a>{' '}
-                            and{' '}
+                            </a>
+                            and
                             <a href="#" className="font-medium text-white hover:text-teal-500">
                                 Privacy Policy
                             </a>
@@ -135,5 +134,4 @@ const SignIn = () => {
         </>
     )
 }
-
 export default SectionWrapper(SignIn, '')
