@@ -8,6 +8,7 @@ export default async function logOut(req: NextApiRequest, res: NextApiResponse) 
         res.status(405).end()
         return
     }
+
     try {
         const cookieName = process.env?.COOKIE_NAME || DEFAULT_COOKIE_NAME
         res.setHeader(
@@ -19,6 +20,7 @@ export default async function logOut(req: NextApiRequest, res: NextApiResponse) 
                 sameSite: 'strict',
             })
         )
+
         res.status(200).json({ message: 'Logout Successful' })
     } catch (err) {
         console.error(err)

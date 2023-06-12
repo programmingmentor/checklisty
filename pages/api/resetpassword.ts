@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { hashPassword } from '@/lib/auth'
+import { compareRecoverCodes, hashPassword } from '@/lib/auth'
 import prisma from '@/prisma/client'
 
 export default async function resetPassword(req: NextApiRequest, res: NextApiResponse) {
@@ -8,23 +8,44 @@ export default async function resetPassword(req: NextApiRequest, res: NextApiRes
         res.status(405).end()
         return
     }
+    
+    const { email, newPassword, code } = req.body
 
-    const { email, newPassword } = req.body
+    switch (true) {
+        case !email:
+            res.status(401).json('Missing email')
+            return
+        case !newPassword:
+            res.status(401).json('Missing password')
+            return
+        case !code:
+            res.status(401).json('Missing code')
+            return
+    }
 
-    if (!email || !newPassword) {
-        res.status(401).json({ error: 'Missing email or password' })
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d{4}).*$/
+
+    if (!passwordRegex.test(newPassword)) {
+        res.status(401).json('Password must contain one uppercase letter, one lowercase letter, and four digits')
         return
     }
+        
 
     try {
         const user = await prisma.user.findUnique({ where: { email } })
 
         if (!user) {
-            res.status(404).json({ error: 'User not found' })
+            res.status(404).json('User not found. Please check your email')
             return
         }
 
-        // Оновлення пароля користувача
+        const isCodeValid = await compareRecoverCodes(code, user.recoverCode)
+
+        if (!isCodeValid) {
+            res.status(401).json('Invalid recovery code')
+            return
+        }
+
         const updatedUser = await prisma.user.update({
             where: { id: user.id },
             data: {

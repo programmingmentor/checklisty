@@ -12,7 +12,7 @@ export default async function signIn(req: NextApiRequest, res: NextApiResponse) 
     res.status(405).end();
     return;
   }
-  // console.log('req.body', req.body)
+  
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -24,14 +24,14 @@ export default async function signIn(req: NextApiRequest, res: NextApiResponse) 
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
-      res.status(401).json({ error: 'Invalid login' });
+      res.status(401).json('Invalid email address');
       return;
     }
 
     const isPasswordMatch = await comparePasswords(password, user.password);
 
     if (!isPasswordMatch) {
-      res.status(401).json({ error: 'Invalid password' });
+      res.status(401).json('Invalid password');
       return;
     }
 
