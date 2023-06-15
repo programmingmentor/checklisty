@@ -1,4 +1,3 @@
-// 'use client'
 import '@/styles/globals.css'
 
 import { cookies } from 'next/headers'
@@ -12,15 +11,15 @@ export const metadata = {
     description: 'Checklisty is a checklist app for your daily tasks.',
 }
 
-const getData = async () => {
-    // await delay(2300)
+const getUser = async () => {
+    await delay(1000)
     const user = await getUserFromCookie(cookies())
     return user
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-    const user = await getData()
-    console.log('render layout')
+    const user = await getUser()
+    
     return (
         <html lang="en">
             <body>

@@ -3,10 +3,13 @@ import { FunctionComponent } from 'react'
 
 import { styles } from '@/components/styles'
 
-interface StarWrapperProps {
-    idName: string
-}
-
+/**
+ * Wraps the provided component with a section wrapper.
+ *
+ * @param {FunctionComponent} Component - The component to be wrapped.
+ * @param {string} idName - The ID attribute for the section wrapper.
+ * @returns {JSX.Element} - The wrapped component within a section wrapper.
+ */
 const SectionWrapper = (Component: FunctionComponent, idName: string) =>
     function HOC() {
         return (
