@@ -22,3 +22,11 @@ model User {
   name        String?
   recoverCode String?
 }
+
+model Checklist {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  complete  Boolean
+}

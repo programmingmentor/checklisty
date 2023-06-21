@@ -30,6 +30,7 @@ services:
 
 volumes:
   postgres:
+   prisma:
 
 networks:
   postgres:
