@@ -81,3 +81,23 @@ export const sendRecoverCode = (email: SendEmailParams): Promise<Response> => {
 export const resetPassword = (user: ResetPasswordParams): Promise<Response> => {
     return fetcher({ url: '/api/resetpassword', method: 'put', body: user })
 }
+
+export const checkList = () => {
+    return fetcher({ url: '/api/checklist', method: 'get' })
+}
+
+export const createChecklist = (todo: any) => {
+    return fetcher({ url: '/api/createChecklist', method: 'post', body: todo })
+}
+
+export const changeChecklistStatus = (id: any) => {
+    return fetcher({ url: '/api/changeCheckliststatus', method: 'post', body: id })
+}
+  
+export const deleteChecklist = (id: string) => {
+    return fetcher({ url: `/api/deleteChecklist?id=${id}`, method: 'delete' })
+}
+
+  export const updateChecklist = (id: string, checklist: any) => {
+    return fetcher({ url: `/api/updateChecklist`, method: 'put', body: { id, ...checklist } });
+  }
