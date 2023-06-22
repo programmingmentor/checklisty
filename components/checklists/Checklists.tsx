@@ -1,12 +1,12 @@
 'use client'
 
-// import prisma from '@/prisma/client'
 import { useCallback, useEffect, useState } from 'react'
 
 import { checkList } from '@/lib/api'
+
 import SectionWrapper from '../hoc/SectionWrapper'
-import NewChecklist from './NewChecklist'
 import ChecklistItem from './ChecklistItem'
+import NewChecklist from './NewChecklist'
 
 
 type Checklist = {

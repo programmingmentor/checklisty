@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+
 import prisma from '@/prisma/client'
 
 export default async function updateChecklist(req: NextApiRequest, res: NextApiResponse) {
