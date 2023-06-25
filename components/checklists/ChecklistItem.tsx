@@ -22,16 +22,19 @@ const ChecklistItem = ({ id, title, complete, fetchData }: ChecklistItemProps) =
     } catch (error) {
       console.error('Error updating Checklist:', error)
     }
-  }
+  }   
 
-const handleDelete = async () => {
-  try {
-    await deleteChecklist(id);
-    fetchData();
-  } catch (error) {
-    console.error('Error deleting Checklist:', error);
-  }
-};
+
+  const handleDelete = async () => {
+    try {
+      await deleteChecklist(id);
+      fetchData();
+    } catch (error) {
+      console.error('Error deleting Checklist:', error);
+    }
+  };
+  
+
 
   const handleToggleEdit = async () => {
     if (isEditing) {
@@ -68,28 +71,36 @@ const handleDelete = async () => {
           ) : (
             <label
               htmlFor={id}
-              className="cursor-pointer peer-checked:line-through peer-checked:text-slate-500"
+              className="cursor-pointer peer-checked:line-through peer-checked:text-slate-500 mr-2 ml-1"
             >
               {title}
             </label>
           )}
-          <button
-            className="ml-auto text-gray-500 hover:text-gray-700"
-            onClick={() => setShowMenu(!showMenu)}
-          >
-            ...
-          </button>
+          <div className="relative ml-auto">
+            <button
+              className="text-gray-400 hover:text-gray-600"
+              onClick={() => setShowMenu(!showMenu)}
+            >
+              ...
+            </button>
+            {showMenu && (
+              <div className="absolute right-0 mt-1 bg-white border border-gray-300 rounded shadow">
+                <button
+                  className="block w-full text-left px-4 py-2 text-gray-500 hover:text-gray-700"
+                  onClick={handleToggleEdit}
+                >
+                  {isEditing ? 'Save' : 'Edit'}
+                </button>
+                <button
+                  className="block w-full text-left px-4 py-2 text-gray-500 hover:text-gray-700"
+                  onClick={handleDelete}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
+          </div>
         </li>
-        {showMenu && (
-  <div className="pl-7 flex justify-around">
-    <button className="text-gray-500 hover:text-gray-700" onClick={handleToggleEdit}>
-      {isEditing ? 'Save' : 'Edit'}
-    </button>
-    <button className="text-gray-500 hover:text-gray-700" onClick={handleDelete}>
-      Delete
-    </button>
-  </div>
-)}
       </ul>
     </motion.div>
   )
