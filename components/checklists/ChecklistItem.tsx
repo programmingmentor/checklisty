@@ -36,19 +36,25 @@ const ChecklistItem = ({ id, title, complete, fetchData }: ChecklistItemProps) =
   
 
 
-  const handleToggleEdit = async () => {
-    if (isEditing) {
-      try {
-        await updateChecklist(id, { title: editedTitle })
-        fetchData()
-      } catch (error) {
-        console.error('Error updating Checklist:', error)
-      }
-    } else {
-      setEditedTitle(title)
+const handleToggleEdit = async () => {
+  if (isEditing) {
+    try {
+      await updateChecklist(id, { title: editedTitle })
+      fetchData()
+      setShowMenu(false) 
+    } catch (error) {
+      console.error('Error updating Checklist:', error)
     }
-    setIsEditing(!isEditing)
+  } else {
+    setEditedTitle(title)
   }
+  setIsEditing(!isEditing)
+}
+
+const handleToggleMenu = () => {
+  setShowMenu(!showMenu)
+  setIsEditing(false) 
+}
 
   return (
     <motion.div animate={{ opacity: 1, scale: 1 }} initial={{ opacity: 0, scale: 0.8 }} transition={{ ease: 'easeOut' }}>
