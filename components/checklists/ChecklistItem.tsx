@@ -1,29 +1,38 @@
-import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { motion } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
 
-import { changeChecklistStatus, deleteChecklist, updateChecklist } from '@/lib/api'
+import { styles } from '@/components/styles';
+import { changeChecklistStatus, deleteChecklist, updateChecklist } from '@/lib/api';
 
 type ChecklistItemProps = {
-  id: string
-  title: string
-  complete: boolean
-  fetchData: () => Promise<void>
-}
+  id: string;
+  title: string;
+  complete: boolean;
+  fetchData: () => Promise<void>;
+};
 
 const ChecklistItem = ({ id, title, complete, fetchData }: ChecklistItemProps) => {
-  const [showMenu, setShowMenu] = useState(false)
-  const [isEditing, setIsEditing] = useState(false)
-  const [editedTitle, setEditedTitle] = useState(title)
+  const [showMenu, setShowMenu] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTitle, setEditedTitle] = useState(title);
+  const menuRef = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>;
+
+  const [showEditMenu, setShowEditMenu] = useState(false);
+  const [isAnyInputOpen, setIsAnyInputOpen] = useState(false);
+
+  const closeAllEditingModes = () => {
+    setIsEditing(false);
+    setShowEditMenu(false);
+  };
 
   const handleToggleStatus = async () => {
     try {
-      await changeChecklistStatus({ id })
-      fetchData()
+      await changeChecklistStatus({ id });
+      fetchData();
     } catch (error) {
-      console.error('Error updating Checklist:', error)
+      console.error('Error updating Checklist:', error);
     }
-  }   
-
+  };
 
   const handleDelete = async () => {
     try {
@@ -33,35 +42,73 @@ const ChecklistItem = ({ id, title, complete, fetchData }: ChecklistItemProps) =
       console.error('Error deleting Checklist:', error);
     }
   };
+
+  const handleToggleEdit = async () => {
+    if (isEditing) {
+      try {
+        await updateChecklist(id, { title: editedTitle });
+        fetchData();
+      } catch (error) {
+        console.error('Error updating Checklist:', error);
+      }
+    } else {
+      setEditedTitle(title);
+    }
+    setIsEditing(!isEditing);
+    setShowMenu(false);
+  };
+
+  const handleToggleMenu = () => {
+    setShowMenu(!showMenu);
+    setIsEditing(false);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      if (!isEditing && !isAnyInputOpen) {
+        setShowMenu(false);
+        closeAllEditingModes();
+      }
+    }
+  };
   
 
+  const handleInputFocus = () => {
+    setIsAnyInputOpen(true);
+  };
 
-const handleToggleEdit = async () => {
-  if (isEditing) {
-    try {
-      await updateChecklist(id, { title: editedTitle })
-      fetchData()
-      setShowMenu(false) 
-    } catch (error) {
-      console.error('Error updating Checklist:', error)
+  const handleInputBlur = () => {
+    setIsAnyInputOpen(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleOtherMenuClick = () => {
+      setShowMenu(false);
+    };
+
+    if (showMenu) {
+      document.addEventListener('click', handleOtherMenuClick);
     }
-  } else {
-    setEditedTitle(title)
-  }
-  setIsEditing(!isEditing)
-}
 
-const handleToggleMenu = () => {
-  setShowMenu(!showMenu)
-  setIsEditing(false) 
-}
+    return () => {
+      document.removeEventListener('click', handleOtherMenuClick);
+    };
+  }, [showMenu]);
 
   return (
     <motion.div animate={{ opacity: 1, scale: 1 }} initial={{ opacity: 0, scale: 0.8 }} transition={{ ease: 'easeOut' }}>
       <ul className="pl-4">
         <li className="flex gap-1 items-center">
-          <input
-            className="form-checkbox h-5 w-5  text-gray-600 cursor-pointer peer"
+        <input
+            className="form-checkbox h-5 w-5 text-gray-600 cursor-pointer peer"
             id={id}
             type="checkbox"
             defaultChecked={complete}
@@ -73,6 +120,8 @@ const handleToggleMenu = () => {
               type="text"
               value={editedTitle}
               onChange={(e) => setEditedTitle(e.target.value)}
+              onFocus={handleInputFocus}
+              onBlur={handleInputBlur}
             />
           ) : (
             <label
@@ -85,23 +134,42 @@ const handleToggleMenu = () => {
           <div className="relative ml-auto">
             <button
               className="text-gray-400 hover:text-gray-600"
-              onClick={() => setShowMenu(!showMenu)}
+              onClick={handleToggleMenu}
+              onMouseDown={(e) => e.stopPropagation()}
             >
               ...
             </button>
-            {showMenu && (
-              <div className="absolute right-0 mt-1 bg-white border border-gray-300 rounded shadow">
+
+            {showMenu && !isEditing && (
+              <div className={`${styles['BackroundDropMenu']} `} onClick={(e) => e.stopPropagation()}>
                 <button
-                  className="block w-full text-left px-4 py-2 text-gray-500 hover:text-gray-700"
-                  onClick={handleToggleEdit}
+                  className={`${styles['buttonsDropMenu']} `}
+                  onClick={() => {
+                    handleToggleEdit();
+                    setShowEditMenu(true);
+                  }}
                 >
-                  {isEditing ? 'Save' : 'Edit'}
+                  Edit
                 </button>
-                <button
-                  className="block w-full text-left px-4 py-2 text-gray-500 hover:text-gray-700"
-                  onClick={handleDelete}
-                >
+                <button className={`${styles['buttonsDropMenu']} `} onClick={handleDelete}>
                   Delete
+                </button>
+              </div>
+            )}
+
+            {showEditMenu && (
+              <div className={`${styles['BackroundDropMenu']} `} onClick={(e) => e.stopPropagation()}>
+                <button
+                  className={`${styles['buttonsDropMenu']} `}
+                  onClick={() => {
+                    handleToggleEdit();
+                    setShowEditMenu(false);
+                  }}
+                >
+                  Save
+                </button>
+                <button className={`${styles['buttonsDropMenu']} `} onClick={closeAllEditingModes}>
+                  Close
                 </button>
               </div>
             )}
@@ -109,7 +177,7 @@ const handleToggleMenu = () => {
         </li>
       </ul>
     </motion.div>
-  )
-}
+  );
+};
 
-export default ChecklistItem
+export default ChecklistItem;
