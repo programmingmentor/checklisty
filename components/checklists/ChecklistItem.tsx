@@ -1,7 +1,10 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 
-import { styles } from '@/components/styles';
+import Checkbox from './Checkbox';
+import OptionsMenu from './OptionsMenu';
+import EditableText from './EditableText';
+import SaveCancelButton from './SaveCancelButton';
 import { changeChecklistStatus, deleteChecklist, updateChecklist } from '@/lib/api';
 
 type ChecklistItemProps = {
@@ -12,17 +15,17 @@ type ChecklistItemProps = {
 };
 
 const ChecklistItem = ({ id, title, complete, fetchData }: ChecklistItemProps) => {
+  const menuRef = useRef<HTMLUListElement>(null);
   const [showMenu, setShowMenu] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
-  const menuRef = useRef<HTMLDivElement>(null) as React.RefObject<HTMLDivElement>;
-
-  const [showEditMenu, setShowEditMenu] = useState(false);
-  const [isAnyInputOpen, setIsAnyInputOpen] = useState(false);
+  const [originalTitle, setOriginalTitle] = useState(title);
+  const [isAnyInputOpen, setIsAnyInputOpen] = useState(false);  
 
   const closeAllEditingModes = () => {
     setIsEditing(false);
-    setShowEditMenu(false);
+    setShowMenu(false);
+    setEditedTitle(originalTitle); 
   };
 
   const handleToggleStatus = async () => {
@@ -43,35 +46,19 @@ const ChecklistItem = ({ id, title, complete, fetchData }: ChecklistItemProps) =
     }
   };
 
-  const handleToggleEdit = async () => {
-    if (isEditing) {
-      try {
-        await updateChecklist(id, { title: editedTitle });
-        fetchData();
-      } catch (error) {
-        console.error('Error updating Checklist:', error);
-      }
-    } else {
-      setEditedTitle(title);
-    }
-    setIsEditing(!isEditing);
+  const handleToggleEdit = () => {
+    setIsEditing((prev) => !prev);
     setShowMenu(false);
   };
 
   const handleToggleMenu = () => {
-    setShowMenu(!showMenu);
-    setIsEditing(false);
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-      if (!isEditing && !isAnyInputOpen) {
-        setShowMenu(false);
-        closeAllEditingModes();
-      }
+    if (isAnyInputOpen) {
+      closeAllEditingModes();
+    } else {
+      setShowMenu(!showMenu);
+      setIsEditing(false);
     }
   };
-  
 
   const handleInputFocus = () => {
     setIsAnyInputOpen(true);
@@ -81,13 +68,15 @@ const ChecklistItem = ({ id, title, complete, fetchData }: ChecklistItemProps) =
     setIsAnyInputOpen(false);
   };
 
-  useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside);
-    };
-  }, []);
+  const handleSave = async () => {
+    try {
+      await updateChecklist(id, { title: editedTitle });
+      fetchData();
+    } catch (error) {
+      console.error('Error updating Checklist:', error);
+    }
+    setIsEditing(false);
+  };
 
   useEffect(() => {
     const handleOtherMenuClick = () => {
@@ -105,24 +94,11 @@ const ChecklistItem = ({ id, title, complete, fetchData }: ChecklistItemProps) =
 
   return (
     <motion.div animate={{ opacity: 1, scale: 1 }} initial={{ opacity: 0, scale: 0.8 }} transition={{ ease: 'easeOut' }}>
-      <ul className="pl-4">
+      <ul className="pl-4" ref={menuRef}>
         <li className="flex gap-1 items-center">
-        <input
-            className="form-checkbox h-5 w-5 text-gray-600 cursor-pointer peer"
-            id={id}
-            type="checkbox"
-            defaultChecked={complete}
-            onChange={handleToggleStatus}
-          />
+          <Checkbox id={id} checked={complete} onChange={handleToggleStatus} />
           {isEditing ? (
-            <input
-              className="border border-slate-300 bg-transparent rounded px-2 py-1 outline-none focus-within:border-slate-100"
-              type="text"
-              value={editedTitle}
-              onChange={(e) => setEditedTitle(e.target.value)}
-              onFocus={handleInputFocus}
-              onBlur={handleInputBlur}
-            />
+            <EditableText value={editedTitle} onChange={setEditedTitle} onFocus={handleInputFocus} onBlur={handleInputBlur} />
           ) : (
             <label
               htmlFor={id}
@@ -139,40 +115,15 @@ const ChecklistItem = ({ id, title, complete, fetchData }: ChecklistItemProps) =
             >
               ...
             </button>
-
             {showMenu && !isEditing && (
-              <div className={`${styles['BackroundDropMenu']} `} onClick={(e) => e.stopPropagation()}>
-                <button
-                  className={`${styles['buttonsDropMenu']} `}
-                  onClick={() => {
-                    handleToggleEdit();
-                    setShowEditMenu(true);
-                  }}
-                >
-                  Edit
-                </button>
-                <button className={`${styles['buttonsDropMenu']} `} onClick={handleDelete}>
-                  Delete
-                </button>
-              </div>
+              <OptionsMenu
+                id={id}
+                fetchData={fetchData}
+                handleToggleEdit={handleToggleEdit}
+                handleDelete={handleDelete}
+              />
             )}
-
-            {showEditMenu && (
-              <div className={`${styles['BackroundDropMenu']} `} onClick={(e) => e.stopPropagation()}>
-                <button
-                  className={`${styles['buttonsDropMenu']} `}
-                  onClick={() => {
-                    handleToggleEdit();
-                    setShowEditMenu(false);
-                  }}
-                >
-                  Save
-                </button>
-                <button className={`${styles['buttonsDropMenu']} `} onClick={closeAllEditingModes}>
-                  Close
-                </button>
-              </div>
-            )}
+            {isEditing && <SaveCancelButton handleSave={handleSave} handleClose={closeAllEditingModes} />}
           </div>
         </li>
       </ul>

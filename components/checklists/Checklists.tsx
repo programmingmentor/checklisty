@@ -1,13 +1,11 @@
 'use client'
-
 import { useCallback, useEffect, useState } from 'react'
 
 import { checkList } from '@/lib/api'
-
+import { styles } from '@/components/styles';
 import SectionWrapper from '../hoc/SectionWrapper'
-import ChecklistItem from './ChecklistItem'
 import NewChecklist from './NewChecklist'
-
+import ChecklistItem from './ChecklistItem'
 
 type Checklist = {
     id: string
@@ -37,29 +35,18 @@ const Checklists = () => {
                 <h1 className="text-2xl ">Checklisty</h1>
                 <h2>Private</h2>
                 <div>
-                    <button className="border border-white bg-transparent px-3 py-0.5 rounded-xl my-2 mx-2">PUBLIC</button>
-                    <button className="border border-white bg-transparent px-3 py-0.5 rounded-xl my-2 mx-2">MY</button>
-                    <button className="border border-white bg-transparent px-3 py-0.5 rounded-xl my-2 mx-2">NEW</button>
+                    <button className={`${styles['buttonsMain']} `}>PUBLIC</button>
+                    <button className={`${styles['buttonsMain']} `}>MY</button>
+                    <button className={`${styles['buttonsMain']} `}>NEW</button>
                 </div>
-
-                <NewChecklist fetchData={fetchData} />
-                
-                    <div>
+                <NewChecklist fetchData={fetchData} />                
+                 <div>
                         {Checklists.map((checkList) => (
-                            <ChecklistItem
-                            key={checkList.id}
-                            id={checkList.id}
-                            title={checkList.title}
-                            complete={checkList.complete}
-                            fetchData={fetchData}
-                          />
+                            <ChecklistItem key={checkList.id} id={checkList.id} title={checkList.title} complete={checkList.complete} fetchData={fetchData} />
                         ))}
-                    </div>
-                
+                 </div>                
             </div>
         </>
     )
 }
 export default SectionWrapper(Checklists, '')
-
-
