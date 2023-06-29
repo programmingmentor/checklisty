@@ -16,11 +16,13 @@ const styles = {
     BackroundDropMenu:
     "absolute right-5 bg-black bg-opacity-80 px-6 py-2 mt-1.5",
    buttonsMain:
-    "border border-white bg-transparent px-3 py-0.5 rounded-xl my-2 mx-2",
+    "border border-white bg-transparent px-3 py-0.5 rounded-xl my-2 mx-2 hover:bg-gray-700",
    buttonsDropMenu: 
-     "border border-white  bg-black bg-opacity-80 px-3 py-0.5 rounded-xl my-2 mx-2",
+     "border border-white bg-black bg-opacity-80 px-3 py-0.5 rounded-xl my-2 mx-2 hover:bg-gray-700",
    inputsMain:
-     "border border-slate-300 bg-transparent rounded px-2 py-1 outline-none focus-within:border-slate-100"  
+     "border border-slate-300 bg-transparent rounded px-2 py-1 outline-none focus-within:border-slate-100",
+   checklistLi: 
+     "flex gap-1 items-center hover:bg-gray-800"   
 };
 
 export { styles };

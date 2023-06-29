@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Checkbox from './Checkbox';
 import OptionsMenu from './OptionsMenu';
 import EditableText from './EditableText';
+import { styles } from '@/components/styles';
 import SaveCancelButton from './SaveCancelButton';
 import { changeChecklistStatus, deleteChecklist, updateChecklist } from '@/lib/api';
 
@@ -69,6 +70,11 @@ const ChecklistItem = ({ id, title, complete, fetchData }: ChecklistItemProps) =
   };
 
   const handleSave = async () => {
+    if (editedTitle.trim() === '') {     
+      alert('The checklist cannot be empty');
+      return;
+    }
+  
     try {
       await updateChecklist(id, { title: editedTitle });
       fetchData();
@@ -95,7 +101,7 @@ const ChecklistItem = ({ id, title, complete, fetchData }: ChecklistItemProps) =
   return (
     <motion.div animate={{ opacity: 1, scale: 1 }} initial={{ opacity: 0, scale: 0.8 }} transition={{ ease: 'easeOut' }}>
       <ul className="pl-4" ref={menuRef}>
-        <li className="flex gap-1 items-center">
+        <li className={`${styles['checklistLi']} `}>
           <Checkbox id={id} checked={complete} onChange={handleToggleStatus} />
           {isEditing ? (
             <EditableText value={editedTitle} onChange={setEditedTitle} onFocus={handleInputFocus} onBlur={handleInputBlur} />
@@ -109,7 +115,7 @@ const ChecklistItem = ({ id, title, complete, fetchData }: ChecklistItemProps) =
           )}
           <div className="relative ml-auto">
             <button
-              className="text-gray-400 hover:text-gray-600"
+              className="text-gray-400 hover:text-gray-600 mr-1"
               onClick={handleToggleMenu}
               onMouseDown={(e) => e.stopPropagation()}
             >
