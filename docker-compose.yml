@@ -3,7 +3,7 @@ version: '3'
 services:
     postgres:
         image: postgres:15.0-alpine
-        container_name: postgres
+        container_name: postgresMaryan
         environment:
             - POSTGRES_USER=dev_admin
             - POSTGRES_PASSWORD=dev_password

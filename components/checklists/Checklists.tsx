@@ -1,11 +1,12 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
 
-import { checkList } from '@/lib/api'
 import { styles } from '@/components/styles';
+import { checkList } from '@/lib/api'
+
 import SectionWrapper from '../hoc/SectionWrapper'
-import NewChecklist from './NewChecklist'
 import ChecklistItem from './ChecklistItem'
+import NewChecklist from './NewChecklist'
 
 type Checklist = {
     id: string
@@ -39,12 +40,14 @@ const Checklists = () => {
                     <button className={`${styles['buttonsMain']} `}>MY</button>
                     <button className={`${styles['buttonsMain']} `}>NEW</button>
                 </div>
-                <NewChecklist fetchData={fetchData} />                
-                 <div>
+                <NewChecklist fetchData={fetchData} />
+                <div>
+                    <ul className="pl-4">
                         {Checklists.map((checkList) => (
                             <ChecklistItem key={checkList.id} id={checkList.id} title={checkList.title} complete={checkList.complete} fetchData={fetchData} />
                         ))}
-                 </div>                
+                    </ul>
+                </div>
             </div>
         </>
     )
