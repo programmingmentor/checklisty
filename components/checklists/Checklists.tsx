@@ -52,4 +52,5 @@ const Checklists = () => {
         </>
     )
 }
+
 export default SectionWrapper(Checklists, '')

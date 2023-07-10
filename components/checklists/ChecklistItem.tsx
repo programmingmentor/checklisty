@@ -15,12 +15,11 @@ type ChecklistItemProps = {
 }
 
 const ChecklistItem = ({ id, title, complete, fetchData }: ChecklistItemProps) => {
-    const menuRef = useRef(null)
-    const [showMenu, setShowMenu] = useState(false)
-    const [activeItemId, setActiveItemId] = useState<string | null>(null)
-    const [isEditing, setIsEditing] = useState(false)
+    const menuRef = useRef<HTMLLIElement>(null)
+    const [initialTitle, setInitialTitle] = useState(title)
     const [editedTitle, setEditedTitle] = useState(title)
-    const [initialTitle, setinitialTitle] = useState(title)
+    const [showMenu, setShowMenu] = useState(false)
+    const [showEditMenu, setShowEditMenu] = useState(false)
 
     const handleToggleStatus = async () => {
         try {
@@ -30,14 +29,13 @@ const ChecklistItem = ({ id, title, complete, fetchData }: ChecklistItemProps) =
             console.error('Error updating Checklist:', error)
         }
     }
-
-    useEffect(() => {
-        const handleOutsideClick = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setShowMenu(false)
-            }
+    const handleOutsideClick = (event: MouseEvent) => {
+        if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+            setShowMenu(false)
+            setShowEditMenu(false)
         }
-
+    }
+    useEffect(() => {
         document.addEventListener('mousedown', handleOutsideClick)
 
         return () => {
@@ -45,36 +43,14 @@ const ChecklistItem = ({ id, title, complete, fetchData }: ChecklistItemProps) =
         }
     }, [])
 
-    const handleToggleMenu = (itemId: string) => {
-        setActiveItemId(itemId)
-        if (activeItemId === itemId) {
-            setShowMenu(!showMenu)
-        }
+    const handleToggleMenu = () => {
+        setShowMenu((prevShowMenu) => !prevShowMenu)
+        setShowEditMenu(false)
     }
 
     const handleToggleEdit = () => {
+        setShowEditMenu((prevShowEditMenu) => !prevShowEditMenu)
         setShowMenu(false)
-        setIsEditing(true)
-    }
-
-    const handleSave = async () => {
-        if (editedTitle.trim() === '') {
-            alert('The checklist cannot be empty')
-            return
-        }
-
-        try {
-            await updateChecklist(id, { title: editedTitle })
-            fetchData()
-        } catch (error) {
-            console.error('Error updating Checklist:', error)
-        }
-        setIsEditing(false)
-    }
-
-    const handleCancel = () => {
-        setIsEditing(false)
-        setEditedTitle(initialTitle)
     }
 
     const handleDelete = async () => {
@@ -86,11 +62,33 @@ const ChecklistItem = ({ id, title, complete, fetchData }: ChecklistItemProps) =
         }
     }
 
+    const handleSave = async () => {
+        // TODO: Add toasts instead of browser alerts
+
+        // if (editedTitle.trim() === '') {
+        //     alert('The checklist cannot be empty')
+        //     return
+        // }
+
+        try {
+            await updateChecklist(id, { title: editedTitle })
+            fetchData()
+        } catch (error) {
+            console.error('Error updating Checklist:', error)
+        }
+        setShowEditMenu(false)
+    }
+
+    const handleCancel = () => {
+        setShowEditMenu(false)
+        setEditedTitle(initialTitle)
+    }
+
     return (
         <motion.div animate={{ opacity: 1, scale: 1 }} initial={{ opacity: 0, scale: 0.8 }} transition={{ ease: 'easeOut' }}>
             <li className={`${styles['checklistLi']} `} ref={menuRef}>
                 <Checkbox id={id} checked={complete} onChange={handleToggleStatus} />
-                {isEditing ? (
+                {showEditMenu ? (
                     <input className={`${styles['inputsMain']} `} type="text" value={editedTitle} onChange={(e) => setEditedTitle(e.target.value)} />
                 ) : (
                     <label htmlFor={id} className="cursor-pointer peer-checked:line-through peer-checked:text-slate-500 mr-2 ml-1">
@@ -98,11 +96,16 @@ const ChecklistItem = ({ id, title, complete, fetchData }: ChecklistItemProps) =
                     </label>
                 )}
                 <div className="relative ml-auto">
-                    <button className="text-gray-400 hover:text-gray-600 px-3" onClick={() => handleToggleMenu(id)} disabled={isEditing}>
+                    <button className="text-gray-400 hover:text-gray-600 px-3" onClick={handleToggleMenu} disabled={showEditMenu}>
                         ...
                     </button>
-                    {showMenu && <OptionsMenu handlers={{ handleToggleEdit, handleDelete }} textData={{ firstLabel: 'Edit', secondLabel: 'Delete' }} />}
-                    {isEditing && <OptionsMenu handlers={{ handleSave, handleCancel }} textData={{ firstLabel: 'Save', secondLabel: 'Cancel' }} />}
+                    {(showMenu || showEditMenu) && (
+                        <OptionsMenu
+                            handlers={{ handleToggleEdit, handleDelete, handleSave, handleCancel }}
+                            btnLabel={{ firstLabel: showEditMenu ? 'Save' : 'Edit', secondLabel: showEditMenu ? 'Cancel' : 'Delete' }}
+                            state={{ showEditMenu }}
+                        />
+                    )}
                 </div>
             </li>
         </motion.div>
