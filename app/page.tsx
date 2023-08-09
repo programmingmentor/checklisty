@@ -1,9 +1,10 @@
-import { About } from '@/components'
+
+import MarkdownEditor from '@/components/MarkdownEditor'
 
 export default function Home() {
     return (
         <>
-            <About />
+            <MarkdownEditor />
         </>
     )
 }

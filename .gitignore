@@ -38,9 +38,14 @@ next-env.d.ts
 # visula studio code
 /.vscode/
 
-
 #yarn.lock
 yarn.lock
 
 #package-lock.json
 package-lock.json
+
+# Husky
+/.husky/
+
+# GitHub
+/.github/

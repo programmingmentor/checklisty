@@ -3,8 +3,8 @@ export const navLinks = [
         link: '/',
         title: 'home',
     },
-    {
-        id: 'about',
-        title: 'about',
-    },
+    // {
+    //     id: 'about',
+    //     title: 'about',
+    // },
 ]
