@@ -1,10 +1,9 @@
+import CheckList from '@/components/checklist/CheckList'
 
-import MarkdownEditor from '@/components/MarkdownEditor'
-
-export default function Home() {
+export default async function Home() {
     return (
         <>
-            <MarkdownEditor />
+            <CheckList />
         </>
     )
 }

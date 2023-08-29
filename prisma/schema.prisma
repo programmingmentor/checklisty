@@ -14,11 +14,34 @@ datasource db {
 }
 
 model User {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  email       String   @unique
+  id          String      @id @default(uuid())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  email       String      @unique
   password    String
   name        String?
   recoverCode String?
+  Checklist   Checklist[]
+}
+
+model Checklist {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  markdown  String  @default("")
+  items     Item[]
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+}
+
+model Item {
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  title       String
+  description String?
+  completed   Boolean   @default(false)
+  checklist   Checklist @relation(fields: [checklistId], references: [id], onDelete: Cascade)
+  checklistId String
 }

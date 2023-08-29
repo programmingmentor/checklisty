@@ -1,9 +1,10 @@
 'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
-import { Slide, toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 
 import { close, menu } from '@/assets'
 import { styles } from '@/components/styles'
@@ -64,19 +65,6 @@ const NavBar = ({ user }) => {
                     </div>
                 </div>
             </div>
-            <ToastContainer
-                position="top-center"
-                autoClose={1400}
-                transition={Slide}
-                hideProgressBar
-                newestOnTop={false}
-                closeOnClick={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover={false}
-                theme="light"
-            />
             <div className="flex">
                 {isUser ? <h2 className="text-sm flex items-center pr-1">Welcome {isUser}</h2> : null}
                 {isUser ? (

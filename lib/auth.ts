@@ -53,10 +53,7 @@ export const validateJWT = async (jwt: string | Uint8Array) => {
  */
 export const getUserFromCookie = async (cookies: ReadonlyRequestCookies) => {
     const jwt = cookies.get(process.env.COOKIE_NAME || 'jwt')
-
-    if (!jwt) {
-        return null
-    }
+    if (!jwt) return null
 
     const { id } = await validateJWT(jwt.value)
 
